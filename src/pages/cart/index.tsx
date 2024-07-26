@@ -54,7 +54,7 @@ const stripePromise = loadStripe("pk_test_51PflrdF6vxTa5nhc5Df3BaQ31KldTy82Vf4CG
 
 const stripeCheckout = async (cartItems: CartItem[]) => {
   const stripe = await stripePromise;
-  const response = await fetch('http://localhost:3000/create-checkout-session', {
+  const response = await fetch("https://7agkly2hs1.execute-api.us-east-1.amazonaws.com/dev/create-checkout-session", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -72,14 +72,6 @@ const stripeCheckout = async (cartItems: CartItem[]) => {
   if(result?.error) {
     console.log(result.error);
   }
-  // console.log(session);
-  // try {
-  //   const result = await stripe?.redirectToCheckout({
-  //     sessionId: session.sessionId,
-  //   });
-  // } catch (err) {
-  //   alert(err)
-  // }
 }
 
 export const CartPage = () => {
