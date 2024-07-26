@@ -10,6 +10,7 @@ import { ThemeProvider } from '@emotion/react';
 import { appTheme } from './theme'
 import { CartPage } from './pages/cart';
 import { MenuBar } from './components/menuBar';
+import { OrderConfirmation } from './pages/success';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/success=true" element={<OrderConfirmation />}/>
         </Routes>
       </Router>
     </ThemeProvider>
