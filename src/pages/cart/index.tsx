@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Button, Container, Grid, Typography, Paper, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
