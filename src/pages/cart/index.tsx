@@ -3,6 +3,8 @@ import { styled } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useCart } from '../../context';
+import { loadStripe } from '@stripe/stripe-js';
+import { CartItem } from '../../context/types';
 
 const Root = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(4),
@@ -47,6 +49,38 @@ const Summary = styled(Paper)(({ theme }) => ({
 const CheckoutButton = styled(Button)(({ theme }) => ({
   marginTop: theme.spacing(3),
 }));
+
+const stripePromise = loadStripe("pk_test_51PflrdF6vxTa5nhc5Df3BaQ31KldTy82Vf4CGo2ExQGidAVftrUyeBVfk04LFmn3vBSOJtUAaGzRA9lBj4h9XW3c00EifKOKmO");
+
+const stripeCheckout = async (cartItems: CartItem[]) => {
+  const stripe = await stripePromise;
+  const response = await fetch('http://localhost:3000/create-checkout-session', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({items: cartItems}),
+  });
+
+  const session = await response.json();
+  console.log(session)
+
+  const result = await stripe?.redirectToCheckout({
+    sessionId: session.sessionId,
+  })
+
+  if(result?.error) {
+    console.log(result.error);
+  }
+  // console.log(session);
+  // try {
+  //   const result = await stripe?.redirectToCheckout({
+  //     sessionId: session.sessionId,
+  //   });
+  // } catch (err) {
+  //   alert(err)
+  // }
+}
 
 export const CartPage = () => {
 
@@ -113,7 +147,7 @@ export const CartPage = () => {
             <Typography variant="body1" gutterBottom>
               Total: <TotalPrice>${total.toFixed(2)}</TotalPrice>
             </Typography>
-            <CheckoutButton variant="contained" color="primary" fullWidth href="/checkout">
+            <CheckoutButton variant="contained" color="primary" fullWidth onClick={() => stripeCheckout(cartItems)}>
               Proceed to Checkout
             </CheckoutButton>
           </Summary>
