@@ -1,4 +1,4 @@
-import { Box, AppBar, Toolbar, IconButton, Typography } from "@mui/material"
+import { Box, AppBar, Toolbar, IconButton } from "@mui/material"
 import { ShoppingCart } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 import logo from "../../assets/Cozy.png"
