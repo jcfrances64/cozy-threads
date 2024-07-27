@@ -1,54 +1,9 @@
 import { Box, Button, Container, Grid, Typography, Paper, IconButton } from '@mui/material';
-import { styled } from '@mui/system';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useCart } from '../../context';
 import { loadStripe } from '@stripe/stripe-js';
 import { CartItem } from '../../context/types';
-
-const Root = styled(Container)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-}));
-
-const ProductImage = styled('img')({
-  width: '100px',
-  height: '100px',
-  objectFit: 'cover',
-  borderRadius: '8px',
-});
-
-const ProductDetails = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const ProductName = styled(Typography)({
-  fontWeight: 'bold',
-});
-
-const ProductPrice = styled(Typography)(({ theme }) => ({
-  marginTop: theme.spacing(1),
-}));
-
-const QuantityControls = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  marginTop: theme.spacing(2),
-}));
-
-const TotalPrice = styled(Typography)({
-  fontWeight: 'bold',
-  fontSize: '1.5rem',
-});
-
-const Summary = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  borderRadius: '8px',
-}));
-
-const CheckoutButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(3),
-}));
 
 const stripePromise = loadStripe("pk_test_51PflrdF6vxTa5nhc5Df3BaQ31KldTy82Vf4CGo2ExQGidAVftrUyeBVfk04LFmn3vBSOJtUAaGzRA9lBj4h9XW3c00EifKOKmO");
 
@@ -75,7 +30,6 @@ const stripeCheckout = async (cartItems: CartItem[]) => {
 }
 
 export const CartPage = () => {
-
   const { cartItems, incrementItem, decrementItem } = useCart();
 
   const handleAddQuantity = (id: number) => {
@@ -89,7 +43,7 @@ export const CartPage = () => {
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <Root>
+    <Container sx={{ marginTop: 16 }}>
       <Typography variant="h4" gutterBottom>
         Shopping Cart
       </Typography>
@@ -99,23 +53,23 @@ export const CartPage = () => {
             <Paper key={item.id} elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
               <Grid container spacing={2}>
                 <Grid item>
-                  <ProductImage src={item.image} alt={item.title} />
+                  <img src={item.image} alt={item.title} style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} />
                 </Grid>
                 <Grid item xs={6}>
-                  <ProductDetails>
-                    <ProductName variant="h6">
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                       {item.title}
-                    </ProductName>
+                    </Typography>
                     <Typography variant="body2" color="textSecondary">
                       {item.description}
                     </Typography>
-                    <ProductPrice variant="body1">
+                    <Typography variant="body1" sx={{ marginTop: 1 }}>
                       ${item.price.toFixed(2)}
-                    </ProductPrice>
-                  </ProductDetails>
+                    </Typography>
+                  </Box>
                 </Grid>
                 <Grid item xs={3}>
-                  <QuantityControls>
+                  <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
                     <IconButton onClick={() => handleRemoveQuantity(item.id)}>
                       <RemoveCircleOutlineIcon />
                     </IconButton>
@@ -125,27 +79,26 @@ export const CartPage = () => {
                     <IconButton onClick={() => handleAddQuantity(item.id)}>
                       <AddCircleOutlineIcon />
                     </IconButton>
-                  </QuantityControls>
+                  </Box>
                 </Grid>
               </Grid>
             </Paper>
           ))}
         </Grid>
         <Grid item xs={12} md={4}>
-          <Summary elevation={3}>
+          <Paper elevation={3} sx={{ padding: 3, borderRadius: '8px' }}>
             <Typography variant="h6" gutterBottom>
               Order Summary
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Total: <TotalPrice>${total.toFixed(2)}</TotalPrice>
+              Total: <strong style={{ fontSize: '1.5rem' }}>${total.toFixed(2)}</strong>
             </Typography>
-            <CheckoutButton variant="contained" color="primary" fullWidth onClick={() => stripeCheckout(cartItems)}>
+            <Button variant="contained" color="primary" fullWidth onClick={() => stripeCheckout(cartItems)}>
               Proceed to Checkout
-            </CheckoutButton>
-          </Summary>
+            </Button>
+          </Paper>
         </Grid>
       </Grid>
-    </Root>
+    </Container>
   );
 };
-
