@@ -1,0 +1,2 @@
+export const PUBLISHABLE_KEY = 'pk_test_51PflrdF6vxTa5nhc5Df3BaQ31KldTy82Vf4CGo2ExQGidAVftrUyeBVfk04LFmn3vBSOJtUAaGzRA9lBj4h9XW3c00EifKOKmO';
+export const API_URL = 'https://7agkly2hs1.execute-api.us-east-1.amazonaws.com'

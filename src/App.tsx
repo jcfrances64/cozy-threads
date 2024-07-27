@@ -18,9 +18,9 @@ const App = () => {
       <Router>
       <MenuBar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/success=true" element={<OrderConfirmation />}/>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path='/success=true' element={<OrderConfirmation />}/>
         </Routes>
       </Router>
     </ThemeProvider>

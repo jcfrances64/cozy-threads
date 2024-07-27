@@ -9,12 +9,12 @@ interface CartProviderProps {
 
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const items = localStorage.getItem("cart");
+    const items = localStorage.getItem('cart');
     return items ? JSON.parse(items) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
+    localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addItemToCart = (item: CartItem) => {

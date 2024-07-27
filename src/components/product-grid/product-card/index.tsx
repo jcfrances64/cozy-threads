@@ -41,21 +41,21 @@ export const ProductCard = ({ product, setCartAlert } : { product: Product, setC
       }}
     >
       <CardMedia
-        component="img"
+        component='img'
         sx={{ height: 250, objectFit: 'cover' }}
         image={product.image}
         alt={product.title}
-        className="content"
+        className='content'
       />
-      <CardContent className="content">
-        <Typography gutterBottom variant="h5" component="h2">
+      <CardContent className='content'>
+        <Typography gutterBottom variant='h5' component='h2'>
           {product.title}
         </Typography>
-        <Typography variant="h6">
+        <Typography variant='h6'>
           ${product.price.toFixed(2)}
         </Typography>
       </CardContent>
-      <CardActions className="cardActions" sx={{
+      <CardActions className='cardActions' sx={{
         justifyContent: 'center',
         flexDirection: 'column',
         position: 'absolute',
@@ -68,10 +68,10 @@ export const ProductCard = ({ product, setCartAlert } : { product: Product, setC
         transition: 'opacity 0.3s, visibility 0.3s',
         gap: 2,
       }}>
-        <Button variant="contained" color="primary" onClick={() => addToCartAndAlert(product)}>
+        <Button variant='contained' color='primary' onClick={() => addToCartAndAlert(product)}>
           Add to Cart
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleOpen}>
+        <Button variant='contained' color='secondary' onClick={handleOpen}>
           More Details
         </Button>
       </CardActions>
@@ -79,8 +79,8 @@ export const ProductCard = ({ product, setCartAlert } : { product: Product, setC
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
       >
         <Box sx={{
           position: 'absolute',
@@ -97,22 +97,22 @@ export const ProductCard = ({ product, setCartAlert } : { product: Product, setC
           overflowY: 'auto',
           borderRadius: '20px',
         }}>
-          <Typography id="modal-modal-title" variant="h4" component="h2">
+          <Typography id='modal-modal-title' variant='h4' component='h2'>
             {product.title}
           </Typography>
           <CardMedia
-            component="img"
+            component='img'
             sx={{ height: 'auto', maxHeight: 300, width: '100%', objectFit: 'contain', mb: 2 }}
             image={product.image}
             alt={product.title}
           />
-          <Typography id="modal-modal-description" sx={{ my: 2 }}>
+          <Typography id='modal-modal-description' sx={{ my: 2 }}>
             {product.description}
           </Typography>
-          <Typography variant="h5" sx={{ mb: 2 }}>
+          <Typography variant='h5' sx={{ mb: 2 }}>
             Price: ${product.price.toFixed(2)}
           </Typography>
-          <Button variant="contained" color="primary" onClick={() => {
+          <Button variant='contained' color='primary' onClick={() => {
             addToCartAndAlert(product);
             handleClose();
           }} fullWidth>

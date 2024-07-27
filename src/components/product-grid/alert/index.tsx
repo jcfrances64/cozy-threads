@@ -17,7 +17,7 @@ export const AddToCartAlert = ({ message, duration } : { message: string, durati
     if (!visible) return null;
 
     return (
-        <div className="alert">
+        <div className='alert'>
             {message}
         </div>
     );

@@ -4,25 +4,27 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useCart } from '../../context';
 import { loadStripe } from '@stripe/stripe-js';
 import { CartItem } from '../../context/types';
+import { PUBLISHABLE_KEY, API_URL } from '../../constants';
 
-const stripePromise = loadStripe("pk_test_51PflrdF6vxTa5nhc5Df3BaQ31KldTy82Vf4CGo2ExQGidAVftrUyeBVfk04LFmn3vBSOJtUAaGzRA9lBj4h9XW3c00EifKOKmO");
+const stripePromise = loadStripe(PUBLISHABLE_KEY);
 
-const stripeCheckout = async (cartItems: CartItem[]) => {
+const stripeCheckout = async (cartItems: CartItem[], clearCart: () => void) => {
   const stripe = await stripePromise;
-  const response = await fetch("https://7agkly2hs1.execute-api.us-east-1.amazonaws.com/dev/create-checkout-session", {
-    method: "POST",
+  const response = await fetch(`${API_URL}/dev/create-checkout-session`, {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({items: cartItems}),
   });
 
   const session = await response.json();
-  console.log(session)
+
+  if(session.sessionId) clearCart();
 
   const result = await stripe?.redirectToCheckout({
     sessionId: session.sessionId,
-  })
+  });
 
   if(result?.error) {
     console.log(result.error);
@@ -30,7 +32,7 @@ const stripeCheckout = async (cartItems: CartItem[]) => {
 }
 
 export const CartPage = () => {
-  const { cartItems, incrementItem, decrementItem } = useCart();
+  const { cartItems, incrementItem, decrementItem, clearCart } = useCart();
 
   const handleAddQuantity = (id: number) => {
     incrementItem(id);
@@ -44,7 +46,7 @@ export const CartPage = () => {
 
   return (
     <Container sx={{ marginTop: 16 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom color="black">
         Shopping Cart
       </Typography>
       <Grid container spacing={3}>
@@ -57,13 +59,13 @@ export const CartPage = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant='h6' component='div' sx={{ fontWeight: 'bold' }}>
                       {item.title}
                     </Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography variant='body2' color='textSecondary'>
                       {item.description}
                     </Typography>
-                    <Typography variant="body1" sx={{ marginTop: 1 }}>
+                    <Typography variant='body1' sx={{ marginTop: 1 }}>
                       ${item.price.toFixed(2)}
                     </Typography>
                   </Box>
@@ -73,7 +75,7 @@ export const CartPage = () => {
                     <IconButton onClick={() => handleRemoveQuantity(item.id)}>
                       <RemoveCircleOutlineIcon />
                     </IconButton>
-                    <Typography variant="body1" sx={{ margin: '0 8px' }}>
+                    <Typography variant='body1' sx={{ margin: '0 8px' }}>
                       {item.quantity}
                     </Typography>
                     <IconButton onClick={() => handleAddQuantity(item.id)}>
@@ -87,13 +89,13 @@ export const CartPage = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper elevation={3} sx={{ padding: 3, borderRadius: '8px' }}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant='h6' gutterBottom>
               Order Summary
             </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant='body1' gutterBottom>
               Total: <strong style={{ fontSize: '1.5rem' }}>${total.toFixed(2)}</strong>
             </Typography>
-            <Button variant="contained" color="primary" fullWidth onClick={() => stripeCheckout(cartItems)}>
+            <Button variant='contained' color='primary' fullWidth onClick={() => stripeCheckout(cartItems, clearCart)}>
               Proceed to Checkout
             </Button>
           </Paper>

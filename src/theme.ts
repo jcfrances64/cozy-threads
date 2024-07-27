@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 export const appTheme = createTheme({
   palette: {
-    mode: "light",
+    mode: 'light',
     primary: {
       main: '#fcfaf2',
     },
