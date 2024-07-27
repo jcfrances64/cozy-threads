@@ -1,9 +1,12 @@
 import { Container, Typography, Button, Paper } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Link } from 'react-router-dom';
+import { useCart } from '../../context';
+
 
 export const OrderConfirmation = () => {
-
+  const { clearCart } = useCart();
+  clearCart();
   return (
     <Container component="main" maxWidth="sm" sx={{ mt: 4 }}>
       <Paper elevation={1} sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

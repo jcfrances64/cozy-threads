@@ -8,7 +8,7 @@ import { PUBLISHABLE_KEY, API_URL } from '../../constants';
 
 const stripePromise = loadStripe(PUBLISHABLE_KEY);
 
-const stripeCheckout = async (cartItems: CartItem[], clearCart: () => void) => {
+const stripeCheckout = async (cartItems: CartItem[]) => {
   const stripe = await stripePromise;
   const response = await fetch(`${API_URL}/dev/create-checkout-session`, {
     method: 'POST',
@@ -20,8 +20,6 @@ const stripeCheckout = async (cartItems: CartItem[], clearCart: () => void) => {
 
   const session = await response.json();
 
-  if(session.sessionId) clearCart();
-
   const result = await stripe?.redirectToCheckout({
     sessionId: session.sessionId,
   });
@@ -32,7 +30,7 @@ const stripeCheckout = async (cartItems: CartItem[], clearCart: () => void) => {
 }
 
 export const CartPage = () => {
-  const { cartItems, incrementItem, decrementItem, clearCart } = useCart();
+  const { cartItems, incrementItem, decrementItem } = useCart();
 
   const handleAddQuantity = (id: number) => {
     incrementItem(id);
@@ -95,7 +93,7 @@ export const CartPage = () => {
             <Typography variant='body1' gutterBottom>
               Total: <strong style={{ fontSize: '1.5rem' }}>${total.toFixed(2)}</strong>
             </Typography>
-            <Button variant='contained' color='primary' fullWidth onClick={() => stripeCheckout(cartItems, clearCart)}>
+            <Button variant='contained' color='primary' fullWidth onClick={() => stripeCheckout(cartItems)}>
               Proceed to Checkout
             </Button>
           </Paper>
